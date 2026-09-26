@@ -37,6 +37,31 @@ test "construction rejects invalid inputs" {
 }
 
 ///|
+test "builders and static integer maps accept construction options" {
+  let options : BuildOptions = {
+    fingerprint_bits: 16,
+    max_attempts: 16,
+    initial_seed: 73,
+  }
+  let builder = FuseBuilder::new()
+  builder.add_all([11, 22, 33, 44]).unwrap()
+  let filter = builder.build_with_options(options).unwrap()
+  assert_true(filter.validate([11, 22, 33, 44]))
+  assert_eq(filter.stats().fingerprint_bits, 16)
+
+  let map = StaticIntMap::build_with_options(
+    [
+      { hash: 11, value: 100 },
+      { hash: 22, value: 200 },
+      { hash: 33, value: 300 },
+    ],
+    options,
+  ).unwrap()
+  assert_eq(map.get(22), Some(200))
+  assert_eq(map.filter_stats().fingerprint_bits, 16)
+}
+
+///|
 test "word encoding round trips and rejects damage" {
   let hashes = [3, 8, 14, 22, 37, 59, 91]
   let original = BinaryFuseFilter::build16(hashes).unwrap()

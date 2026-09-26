@@ -45,7 +45,15 @@ pub fn FuseBuilder::len(self : FuseBuilder) -> Int {
 pub fn FuseBuilder::build(
   self : FuseBuilder,
 ) -> Result[BinaryFuseFilter, FuseError] {
-  BinaryFuseFilter::build(self.hashes)
+  self.build_with_options(default_build_options())
+}
+
+///|
+pub fn FuseBuilder::build_with_options(
+  self : FuseBuilder,
+  options : BuildOptions,
+) -> Result[BinaryFuseFilter, FuseError] {
+  BinaryFuseFilter::build_with_options(self.hashes, options)
 }
 
 ///|

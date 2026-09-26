@@ -19,6 +19,55 @@ test "static string maps use exact keys after approximate prefiltering" {
 }
 
 ///|
+test "string filters honor caller build options" {
+  let options : BuildOptions = {
+    fingerprint_bits: 16,
+    max_attempts: 16,
+    initial_seed: 42,
+  }
+  let filter = StringFuseFilter::build_with_options(
+    ["alpha", "beta", "gamma", "delta"],
+    options,
+  ).unwrap()
+  assert_true(filter.contains("alpha"))
+  assert_true(filter.contains("delta"))
+  assert_true(filter.stats().fingerprint_bits == 16)
+  assert_true(
+    StringFuseFilter::build_with_options(["alpha"], {
+      fingerprint_bits: 7,
+      max_attempts: 1,
+      initial_seed: 0,
+    })
+    is Err(InvalidFingerprintBits(7)),
+  )
+}
+
+///|
+test "static string maps can select fingerprint and seed options" {
+  let options : BuildOptions = {
+    fingerprint_bits: 16,
+    max_attempts: 16,
+    initial_seed: 99,
+  }
+  let map = StaticStringMap::build_with_options(
+    [
+      { key: "accept", value: 202 },
+      { key: "content-type", value: 415 },
+      { key: "etag", value: 304 },
+    ],
+    options,
+  ).unwrap()
+  assert_true(map.validate())
+  assert_eq(map.get("content-type"), Some(415))
+  assert_eq(map.get("missing"), None)
+  assert_eq(map.filter_stats().fingerprint_bits, 16)
+  assert_true(
+    map.filter_stats().seed !=
+    StringFuseFilter::build(["accept", "content-type", "etag"]).unwrap().stats().seed,
+  )
+}
+
+///|
 test "static string maps rebuild immutably for update and removal" {
   let original = StaticStringMap::build([
     { key: "a", value: 1 },

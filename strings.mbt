@@ -11,11 +11,19 @@ pub fn stable_string_hash(value : String) -> Int {
 pub fn StringFuseFilter::build(
   values : Array[String],
 ) -> Result[StringFuseFilter, FuseError] {
+  StringFuseFilter::build_with_options(values, default_build_options())
+}
+
+///|
+pub fn StringFuseFilter::build_with_options(
+  values : Array[String],
+  options : BuildOptions,
+) -> Result[StringFuseFilter, FuseError] {
   let hashes : Array[Int] = []
   for value in values {
     hashes.push(stable_string_hash(value))
   }
-  match BinaryFuseFilter::build(hashes) {
+  match BinaryFuseFilter::build_with_options(hashes, options) {
     Ok(filter) => Ok({ filter, })
     Err(error) => Err(error)
   }

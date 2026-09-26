@@ -2,7 +2,15 @@
 pub fn VerifiedFuseFilter::build(
   hashes : Array[Int],
 ) -> Result[VerifiedFuseFilter, FuseError] {
-  match BinaryFuseFilter::build(hashes) {
+  VerifiedFuseFilter::build_with_options(hashes, default_build_options())
+}
+
+///|
+pub fn VerifiedFuseFilter::build_with_options(
+  hashes : Array[Int],
+  options : BuildOptions,
+) -> Result[VerifiedFuseFilter, FuseError] {
+  match BinaryFuseFilter::build_with_options(hashes, options) {
     Err(error) => Err(error)
     Ok(filter) => {
       let sorted_hashes = hashes.copy()

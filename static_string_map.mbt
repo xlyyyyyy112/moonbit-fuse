@@ -2,6 +2,14 @@
 pub fn StaticStringMap::build(
   entries : Array[StringFuseValue],
 ) -> Result[StaticStringMap, FuseError] {
+  StaticStringMap::build_with_options(entries, default_build_options())
+}
+
+///|
+pub fn StaticStringMap::build_with_options(
+  entries : Array[StringFuseValue],
+  options : BuildOptions,
+) -> Result[StaticStringMap, FuseError] {
   if entries.length() == 0 {
     return Err(EmptyInput)
   }
@@ -16,7 +24,7 @@ pub fn StaticStringMap::build(
   for entry in sorted {
     keys.push(entry.key)
   }
-  match StringFuseFilter::build(keys) {
+  match StringFuseFilter::build_with_options(keys, options) {
     Ok(filter) => Ok({ filter, entries: sorted })
     Err(error) => Err(error)
   }
@@ -135,6 +143,11 @@ pub fn StaticStringMap::stats(self : StaticStringMap) -> StringMapStats {
     }
   }
   { entry_count: self.len(), shortest_key_length, longest_key_length }
+}
+
+///|
+pub fn StaticStringMap::filter_stats(self : StaticStringMap) -> BuildStats {
+  self.filter.stats()
 }
 
 ///|

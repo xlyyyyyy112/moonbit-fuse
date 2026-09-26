@@ -184,6 +184,7 @@ pub fn FuseBuilder::add(Self, Int) -> Result[Unit, FuseError]
 pub fn FuseBuilder::add_all(Self, Array[Int]) -> Result[Unit, FuseError]
 pub fn FuseBuilder::build(Self) -> Result[BinaryFuseFilter, FuseError]
 pub fn FuseBuilder::build16(Self) -> Result[BinaryFuseFilter, FuseError]
+pub fn FuseBuilder::build_with_options(Self, BuildOptions) -> Result[BinaryFuseFilter, FuseError]
 pub fn FuseBuilder::clear(Self) -> Unit
 pub fn FuseBuilder::len(Self) -> Int
 pub fn FuseBuilder::new() -> Self
@@ -338,6 +339,7 @@ pub struct StaticIntMap {
   values : Array[Int]
 }
 pub fn StaticIntMap::build(Array[FuseValue]) -> Result[Self, FuseError]
+pub fn StaticIntMap::build_with_options(Array[FuseValue], BuildOptions) -> Result[Self, FuseError]
 pub fn StaticIntMap::contains_key(Self, Int) -> Bool
 pub fn StaticIntMap::difference(Self, Self) -> Result[Self, FuseError]
 pub fn StaticIntMap::encode_transport(Self) -> Result[Bytes, FuseError]
@@ -346,6 +348,7 @@ pub fn StaticIntMap::entries(Self) -> Array[FuseValue]
 pub fn StaticIntMap::entries_before(Self, Int, Int) -> Array[FuseValue]
 pub fn StaticIntMap::entries_from(Self, Int, Int) -> Array[FuseValue]
 pub fn StaticIntMap::entries_inclusive(Self, Int, Int) -> Array[FuseValue]
+pub fn StaticIntMap::filter_stats(Self) -> BuildStats
 pub fn StaticIntMap::get(Self, Int) -> Int?
 pub fn StaticIntMap::get_all(Self, Array[Int]) -> Array[Int?]
 pub fn StaticIntMap::get_ceiling(Self, Int) -> FuseValue?
@@ -366,11 +369,13 @@ pub struct StaticStringMap {
   entries : Array[StringFuseValue]
 }
 pub fn StaticStringMap::build(Array[StringFuseValue]) -> Result[Self, FuseError]
+pub fn StaticStringMap::build_with_options(Array[StringFuseValue], BuildOptions) -> Result[Self, FuseError]
 pub fn StaticStringMap::contains_key(Self, String) -> Bool
 pub fn StaticStringMap::entries(Self) -> Array[StringFuseValue]
 pub fn StaticStringMap::entries_before(Self, String, Int) -> Array[StringFuseValue]
 pub fn StaticStringMap::entries_between(Self, String, String) -> Array[StringFuseValue]
 pub fn StaticStringMap::entries_from(Self, String, Int) -> Array[StringFuseValue]
+pub fn StaticStringMap::filter_stats(Self) -> BuildStats
 pub fn StaticStringMap::get(Self, String) -> Int?
 pub fn StaticStringMap::get_all(Self, Array[String]) -> Array[Int?]
 pub fn StaticStringMap::get_ceiling(Self, String) -> StringFuseValue?
@@ -388,6 +393,7 @@ pub struct StringFuseFilter {
 }
 pub fn StringFuseFilter::build(Array[String]) -> Result[Self, FuseError]
 pub fn StringFuseFilter::build16(Array[String]) -> Result[Self, FuseError]
+pub fn StringFuseFilter::build_with_options(Array[String], BuildOptions) -> Result[Self, FuseError]
 pub fn StringFuseFilter::contains(Self, String) -> Bool
 pub fn StringFuseFilter::len(Self) -> Int
 pub fn StringFuseFilter::stats(Self) -> BuildStats
@@ -434,6 +440,7 @@ pub struct VerifiedFuseFilter {
 }
 pub fn VerifiedFuseFilter::apply_patch(Self, FusePatch) -> Result[Self, FuseError]
 pub fn VerifiedFuseFilter::build(Array[Int]) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::build_with_options(Array[Int], BuildOptions) -> Result[Self, FuseError]
 pub fn VerifiedFuseFilter::classify_exact(Self, Array[Int]) -> Array[ExactMembershipResult]
 pub fn VerifiedFuseFilter::contains_exact(Self, Int) -> Bool
 pub fn VerifiedFuseFilter::count_exact_matches(Self, Array[Int]) -> Int

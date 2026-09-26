@@ -2,6 +2,14 @@
 pub fn StaticIntMap::build(
   entries : Array[FuseValue],
 ) -> Result[StaticIntMap, FuseError] {
+  StaticIntMap::build_with_options(entries, default_build_options())
+}
+
+///|
+pub fn StaticIntMap::build_with_options(
+  entries : Array[FuseValue],
+  options : BuildOptions,
+) -> Result[StaticIntMap, FuseError] {
   if entries.length() == 0 {
     return Err(EmptyInput)
   }
@@ -13,7 +21,7 @@ pub fn StaticIntMap::build(
     hashes.push(entry.hash)
     values.push(entry.value)
   }
-  match VerifiedFuseFilter::build(hashes) {
+  match VerifiedFuseFilter::build_with_options(hashes, options) {
     Ok(index) => Ok({ index, values })
     Err(error) => Err(error)
   }
@@ -129,6 +137,11 @@ pub fn StaticIntMap::stats(self : StaticIntMap) -> MapStats {
     smallest_key: self.index.sorted_hashes[0],
     largest_key: self.index.sorted_hashes[self.len() - 1],
   }
+}
+
+///|
+pub fn StaticIntMap::filter_stats(self : StaticIntMap) -> BuildStats {
+  self.index.filter.stats()
 }
 
 ///|
