@@ -45,7 +45,12 @@ pub fn decode_words(words : Array[Int]) -> Result[BinaryFuseFilter, FuseError] {
   if fingerprint_count < 0 || fingerprint_count != words.length() - 8 {
     return Err(InvalidEncoding)
   }
-  if fingerprint_count != (segment_count + 2) * segment_length {
+  if fingerprint_count < 3 || segment_count > fingerprint_count - 2 {
+    return Err(InvalidEncoding)
+  }
+  let segment_total = segment_count + 2
+  if fingerprint_count % segment_total != 0 ||
+    fingerprint_count / segment_total != segment_length {
     return Err(InvalidEncoding)
   }
   let max_value = if bits == 8 { 0xff } else { 0xffff }

@@ -61,8 +61,14 @@ pub fn BinaryFuseFilter::has_valid_shape(self : BinaryFuseFilter) -> Bool {
   if self.key_count <= 0 ||
     self.segment_length <= 0 ||
     self.segment_count <= 0 ||
-    self.fingerprints.length() != (self.segment_count + 2) * self.segment_length ||
+    self.fingerprints.length() < 3 ||
+    self.segment_count > self.fingerprints.length() - 2 ||
     (self.fingerprint_bits != 8 && self.fingerprint_bits != 16) {
+    return false
+  }
+  let segment_total = self.segment_count + 2
+  if self.fingerprints.length() % segment_total != 0 ||
+    self.fingerprints.length() / segment_total != self.segment_length {
     return false
   }
   let limit = if self.fingerprint_bits == 8 { 256 } else { 65_536 }

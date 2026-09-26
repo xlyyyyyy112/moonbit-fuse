@@ -49,6 +49,17 @@ test "filter codecs reject truncated, trailing and invalid-version data" {
     decode_words([1, 1, 1, 0x7fffffff, 0, 1, 8, 2, 0, 0])
     is Err(InvalidEncoding),
   )
+  let malformed : BinaryFuseFilter = {
+    key_count: 1,
+    segment_length: 1,
+    segment_count: 0x7fffffff,
+    seed: 0,
+    attempts: 1,
+    fingerprint_bits: 8,
+    fingerprints: [0, 0, 0],
+  }
+  assert_false(malformed.has_valid_shape())
+  assert_false(malformed.validate([1]))
 }
 
 ///|

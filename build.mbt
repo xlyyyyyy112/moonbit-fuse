@@ -117,13 +117,7 @@ pub fn BinaryFuseFilter::validate(
   self : BinaryFuseFilter,
   hashes : Array[Int],
 ) -> Bool {
-  if hashes.length() != self.key_count ||
-    self.segment_length <= 0 ||
-    self.segment_count <= 0 {
-    return false
-  }
-  if self.fingerprints.length() !=
-    (self.segment_count + 2) * self.segment_length {
+  if hashes.length() != self.key_count || !self.has_valid_shape() {
     return false
   }
   for hash in hashes {
