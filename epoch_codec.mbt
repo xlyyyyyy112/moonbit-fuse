@@ -19,7 +19,7 @@ pub fn EpochFuseFilter::encode_words(self : EpochFuseFilter) -> Array[Int] {
 pub fn decode_epoch_words(
   words : Array[Int],
 ) -> Result[EpochFuseFilter, FuseError] {
-  if words.length() < 2 || words[0] != epoch_encoding_version || words[1] <= 0 {
+  if words.length() < 2 || words[0] != epoch_encoding_version || words[1] < 0 {
     return Err(InvalidEncoding)
   }
   let count = words[1]

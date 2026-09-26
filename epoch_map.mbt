@@ -96,18 +96,27 @@ pub fn EpochStaticIntMap::keep_from(
 
 ///|
 pub fn EpochStaticIntMap::stats(self : EpochStaticIntMap) -> EpochMapStats {
+  let epoch_count = self.epochs.length()
   {
-    epoch_count: self.epochs.length(),
+    epoch_count,
     entry_count: self.entry_count(),
-    first_epoch: self.epochs[0].epoch,
-    last_epoch: self.epochs[self.epochs.length() - 1].epoch,
+    first_epoch: if epoch_count == 0 {
+      0
+    } else {
+      self.epochs[0].epoch
+    },
+    last_epoch: if epoch_count == 0 {
+      0
+    } else {
+      self.epochs[epoch_count - 1].epoch
+    },
   }
 }
 
 ///|
 pub fn EpochStaticIntMap::validate(self : EpochStaticIntMap) -> Bool {
   if self.epochs.length() == 0 {
-    return false
+    return true
   }
   for index in 0..<self.epochs.length() {
     if !self.epochs[index].map.validate() ||

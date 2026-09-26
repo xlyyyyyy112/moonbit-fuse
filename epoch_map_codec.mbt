@@ -21,7 +21,7 @@ pub fn decode_epoch_map_words(
 ) -> Result[EpochStaticIntMap, FuseError] {
   if words.length() < 2 ||
     words[0] != epoch_map_encoding_version ||
-    words[1] <= 0 {
+    words[1] < 0 {
     return Err(InvalidEncoding)
   }
   let count = words[1]

@@ -61,3 +61,36 @@ test "candidate inspection keeps invalid hashes outside the filter domain" {
   assert_false(filter.contains(-7))
   assert_eq(filter.fingerprint_stats().slot_count, filter.stats().array_length)
 }
+
+///|
+test "pruned epoch snapshots remain empty, safe, and serializable" {
+  let filter = EpochFuseFilter::build([
+      { epoch: 2, hash: 101 },
+      { epoch: 4, hash: 202 },
+    ])
+    .unwrap()
+    .keep_from(9)
+  assert_true(filter.validate([]))
+  assert_false(filter.contains_any(101))
+  assert_eq(filter.stats().epoch_count, 0)
+  assert_eq(filter.stats().first_epoch, 0)
+  assert_eq(filter.stats().last_epoch, 0)
+  let loaded_filter = decode_epoch_words(filter.encode_words()).unwrap()
+  assert_true(loaded_filter.validate([]))
+  assert_eq(loaded_filter.epoch_count(), 0)
+
+  let map = EpochStaticIntMap::build([
+      { epoch: 2, hash: 101, value: 1 },
+      { epoch: 4, hash: 202, value: 2 },
+    ])
+    .unwrap()
+    .keep_from(9)
+  assert_true(map.validate())
+  assert_eq(map.get_at(4, 202), None)
+  assert_eq(map.stats().epoch_count, 0)
+  assert_eq(map.stats().first_epoch, 0)
+  assert_eq(map.stats().last_epoch, 0)
+  let loaded_map = decode_epoch_map_words(map.encode_words()).unwrap()
+  assert_true(loaded_map.validate())
+  assert_eq(loaded_map.epoch_count(), 0)
+}

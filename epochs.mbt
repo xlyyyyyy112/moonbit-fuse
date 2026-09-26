@@ -67,11 +67,20 @@ pub fn EpochFuseFilter::stats(self : EpochFuseFilter) -> EpochStats {
   for item in self.epochs {
     key_count = key_count + item.filter.len()
   }
+  let epoch_count = self.epochs.length()
   {
-    epoch_count: self.epochs.length(),
+    epoch_count,
     key_count,
-    first_epoch: self.epochs[0].epoch,
-    last_epoch: self.epochs[self.epochs.length() - 1].epoch,
+    first_epoch: if epoch_count == 0 {
+      0
+    } else {
+      self.epochs[0].epoch
+    },
+    last_epoch: if epoch_count == 0 {
+      0
+    } else {
+      self.epochs[epoch_count - 1].epoch
+    },
   }
 }
 
@@ -95,7 +104,7 @@ pub fn EpochFuseFilter::validate(
   entries : Array[EpochHash],
 ) -> Bool {
   if self.epochs.length() == 0 {
-    return false
+    return entries.length() == 0
   }
   for index in 1..<self.epochs.length() {
     if self.epochs[index - 1].epoch >= self.epochs[index].epoch {
