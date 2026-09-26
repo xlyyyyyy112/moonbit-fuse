@@ -1,0 +1,455 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "xlyyyyyy112/moon-fuse"
+
+// Values
+pub fn decode_bytes(Bytes) -> Result[BinaryFuseFilter, FuseError]
+
+pub fn decode_chain_transport(Bytes) -> Result[FuseFilterChain, FuseError]
+
+pub fn decode_chain_words(Array[Int]) -> Result[FuseFilterChain, FuseError]
+
+pub fn decode_epoch_map_transport(Bytes) -> Result[EpochStaticIntMap, FuseError]
+
+pub fn decode_epoch_map_words(Array[Int]) -> Result[EpochStaticIntMap, FuseError]
+
+pub fn decode_epoch_transport(Bytes) -> Result[EpochFuseFilter, FuseError]
+
+pub fn decode_epoch_words(Array[Int]) -> Result[EpochFuseFilter, FuseError]
+
+pub fn decode_filter_transport(Bytes) -> Result[BinaryFuseFilter, FuseError]
+
+pub fn decode_overlay_transport(Bytes) -> Result[FuseOverlay, FuseError]
+
+pub fn decode_overlay_words(Array[Int]) -> Result[FuseOverlay, FuseError]
+
+pub fn decode_sharded_transport(Bytes) -> Result[ShardedFuseFilter, FuseError]
+
+pub fn decode_sharded_words(Array[Int]) -> Result[ShardedFuseFilter, FuseError]
+
+pub fn decode_snapshot_diff_transport(Bytes) -> Result[SnapshotDiff, FuseError]
+
+pub fn decode_snapshot_diff_words(Array[Int]) -> Result[SnapshotDiff, FuseError]
+
+pub fn decode_static_map_transport(Bytes) -> Result[StaticIntMap, FuseError]
+
+pub fn decode_static_map_words(Array[Int]) -> Result[StaticIntMap, FuseError]
+
+pub fn decode_tagged_transport(Bytes) -> Result[TaggedFuseFilter, FuseError]
+
+pub fn decode_tagged_words(Array[Int]) -> Result[TaggedFuseFilter, FuseError]
+
+pub fn decode_verified_transport(Bytes) -> Result[VerifiedFuseFilter, FuseError]
+
+pub fn decode_verified_words(Array[Int]) -> Result[VerifiedFuseFilter, FuseError]
+
+pub fn decode_word_transport(Bytes) -> Result[Array[Int], FuseError]
+
+pub fn decode_words(Array[Int]) -> Result[BinaryFuseFilter, FuseError]
+
+pub fn default_build_options() -> BuildOptions
+
+pub fn empty_patch() -> FusePatch
+
+pub fn encode_word_transport(Array[Int]) -> Result[Bytes, FuseError]
+
+pub fn stable_string_hash(String) -> Int
+
+pub fn word_transport_checksum(Array[Int]) -> Int
+
+// Errors
+
+// Types and methods
+pub struct BinaryFuseFilter {
+  key_count : Int
+  segment_length : Int
+  segment_count : Int
+  seed : Int
+  attempts : Int
+  fingerprint_bits : Int
+  fingerprints : Array[Int]
+}
+pub fn BinaryFuseFilter::bit_cost(Self) -> Int
+pub fn BinaryFuseFilter::bits_per_key_milli(Self) -> Int
+pub fn BinaryFuseFilter::build(Array[Int]) -> Result[Self, FuseError]
+pub fn BinaryFuseFilter::build16(Array[Int]) -> Result[Self, FuseError]
+pub fn BinaryFuseFilter::build_with_options(Array[Int], BuildOptions) -> Result[Self, FuseError]
+pub fn BinaryFuseFilter::candidate_locations(Self, Int) -> FuseLocations?
+pub fn BinaryFuseFilter::candidate_xor(Self, Int) -> Int?
+pub fn BinaryFuseFilter::classify(Self, Array[Int]) -> Array[MembershipResult]
+pub fn BinaryFuseFilter::contains(Self, Int) -> Bool
+pub fn BinaryFuseFilter::contains_all(Self, Array[Int]) -> Bool
+pub fn BinaryFuseFilter::count_matches(Self, Array[Int]) -> Int
+pub fn BinaryFuseFilter::encode_bytes(Self) -> Bytes
+pub fn BinaryFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn BinaryFuseFilter::encode_words(Self) -> Array[Int]
+pub fn BinaryFuseFilter::encoded_byte_length(Self) -> Int
+pub fn BinaryFuseFilter::evaluate(Self, Array[Int], Array[Int]) -> Result[QualityReport, FuseError]
+pub fn BinaryFuseFilter::expected_false_positive_denominator(Self) -> Int
+pub fn BinaryFuseFilter::fingerprint_denominator(Self) -> Int
+pub fn BinaryFuseFilter::fingerprint_stats(Self) -> FingerprintStats
+pub fn BinaryFuseFilter::has_valid_shape(Self) -> Bool
+pub fn BinaryFuseFilter::len(Self) -> Int
+pub fn BinaryFuseFilter::matches_fingerprint(Self, Int) -> Bool
+pub fn BinaryFuseFilter::query_all(Self, Array[Int]) -> QuerySummary
+pub fn BinaryFuseFilter::slot_fingerprints(Self, Int) -> Array[Int]
+pub fn BinaryFuseFilter::stats(Self) -> BuildStats
+pub fn BinaryFuseFilter::uses_16bit_fingerprints(Self) -> Bool
+pub fn BinaryFuseFilter::validate(Self, Array[Int]) -> Bool
+
+pub(all) struct BuildOptions {
+  fingerprint_bits : Int
+  max_attempts : Int
+  initial_seed : Int
+}
+
+pub(all) struct BuildStats {
+  key_count : Int
+  array_length : Int
+  segment_length : Int
+  segment_count : Int
+  seed : Int
+  attempts : Int
+  fingerprint_bits : Int
+}
+
+pub struct EpochFuseFilter {
+  epochs : Array[FuseEpoch]
+}
+pub fn EpochFuseFilter::build(Array[EpochHash]) -> Result[Self, FuseError]
+pub fn EpochFuseFilter::contains_any(Self, Int) -> Bool
+pub fn EpochFuseFilter::contains_at(Self, Int, Int) -> Bool
+pub fn EpochFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn EpochFuseFilter::encode_words(Self) -> Array[Int]
+pub fn EpochFuseFilter::epoch_count(Self) -> Int
+pub fn EpochFuseFilter::keep_from(Self, Int) -> Self
+pub fn EpochFuseFilter::stats(Self) -> EpochStats
+pub fn EpochFuseFilter::validate(Self, Array[EpochHash]) -> Bool
+
+pub(all) struct EpochFuseValue {
+  epoch : Int
+  hash : Int
+  value : Int
+}
+
+pub(all) struct EpochHash {
+  epoch : Int
+  hash : Int
+}
+
+pub(all) struct EpochMapStats {
+  epoch_count : Int
+  entry_count : Int
+  first_epoch : Int
+  last_epoch : Int
+}
+
+pub struct EpochStaticIntMap {
+  epochs : Array[FuseMapEpoch]
+}
+pub fn EpochStaticIntMap::build(Array[EpochFuseValue]) -> Result[Self, FuseError]
+pub fn EpochStaticIntMap::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn EpochStaticIntMap::encode_words(Self) -> Array[Int]
+pub fn EpochStaticIntMap::entry_count(Self) -> Int
+pub fn EpochStaticIntMap::epoch_count(Self) -> Int
+pub fn EpochStaticIntMap::get_at(Self, Int, Int) -> Int?
+pub fn EpochStaticIntMap::get_at_or_before(Self, Int, Int) -> Int?
+pub fn EpochStaticIntMap::keep_from(Self, Int) -> Self
+pub fn EpochStaticIntMap::stats(Self) -> EpochMapStats
+pub fn EpochStaticIntMap::validate(Self) -> Bool
+
+pub(all) struct EpochStats {
+  epoch_count : Int
+  key_count : Int
+  first_epoch : Int
+  last_epoch : Int
+}
+
+pub(all) struct ExactMembershipResult {
+  hash : Int
+  contains : Bool
+}
+
+pub(all) struct FingerprintStats {
+  slot_count : Int
+  occupied_slots : Int
+  empty_slots : Int
+  maximum_fingerprint : Int
+  fingerprint_sum : Int
+}
+
+pub struct FuseBuilder {
+  hashes : Array[Int]
+}
+pub fn FuseBuilder::add(Self, Int) -> Result[Unit, FuseError]
+pub fn FuseBuilder::add_all(Self, Array[Int]) -> Result[Unit, FuseError]
+pub fn FuseBuilder::build(Self) -> Result[BinaryFuseFilter, FuseError]
+pub fn FuseBuilder::build16(Self) -> Result[BinaryFuseFilter, FuseError]
+pub fn FuseBuilder::clear(Self) -> Unit
+pub fn FuseBuilder::len(Self) -> Int
+pub fn FuseBuilder::new() -> Self
+pub fn FuseBuilder::with_capacity(Int) -> Self
+
+pub struct FuseEpoch {
+  epoch : Int
+  filter : BinaryFuseFilter
+}
+
+pub(all) enum FuseError {
+  EmptyInput
+  NegativeHash(Int)
+  DuplicateHash(Int)
+  InvalidFingerprintBits(Int)
+  InvalidAttempts(Int)
+  InvalidShardCount(Int)
+  InvalidTag(Int)
+  ConflictingValue(Int)
+  DuplicateString(String)
+  ConstructionFailed(Int)
+  InvalidEncoding
+  UnsupportedVersion(Int)
+}
+
+pub struct FuseFilterChain {
+  filters : Array[BinaryFuseFilter]
+}
+pub fn FuseFilterChain::contains(Self, Int) -> Bool
+pub fn FuseFilterChain::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn FuseFilterChain::encode_words(Self) -> Array[Int]
+pub fn FuseFilterChain::filter_count(Self) -> Int
+pub fn FuseFilterChain::from_filters(Array[BinaryFuseFilter]) -> Self
+pub fn FuseFilterChain::key_count(Self) -> Int
+pub fn FuseFilterChain::query_all(Self, Array[Int]) -> QuerySummary
+
+pub(all) struct FuseLocations {
+  first : Int
+  second : Int
+  third : Int
+}
+
+pub struct FuseMapEpoch {
+  epoch : Int
+  map : StaticIntMap
+}
+
+pub struct FuseOverlay {
+  base : VerifiedFuseFilter
+  additions : VerifiedFuseFilter?
+  removals : VerifiedFuseFilter?
+}
+pub fn FuseOverlay::contains_exact(Self, Int) -> Bool
+pub fn FuseOverlay::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn FuseOverlay::encode_words(Self) -> Array[Int]
+pub fn FuseOverlay::from_patch(VerifiedFuseFilter, FusePatch) -> Result[Self, FuseError]
+pub fn FuseOverlay::materialize(Self) -> Result[VerifiedFuseFilter, FuseError]
+pub fn FuseOverlay::may_contain(Self, Int) -> Bool
+pub fn FuseOverlay::stats(Self) -> OverlayStats
+pub fn FuseOverlay::validate(Self) -> Bool
+
+pub(all) struct FusePatch {
+  additions : Array[Int]
+  removals : Array[Int]
+}
+
+pub(all) struct FuseValue {
+  hash : Int
+  value : Int
+}
+
+pub(all) enum MapMergePolicy {
+  PreferLeft
+  PreferRight
+  RejectConflicts
+}
+
+pub(all) struct MapMergeStats {
+  left_only_count : Int
+  right_only_count : Int
+  shared_count : Int
+  conflicting_count : Int
+}
+
+pub(all) struct MapStats {
+  entry_count : Int
+  smallest_key : Int
+  largest_key : Int
+}
+
+pub(all) struct MembershipResult {
+  hash : Int
+  might_contain : Bool
+}
+
+pub(all) struct OverlayStats {
+  base_key_count : Int
+  addition_count : Int
+  removal_count : Int
+}
+
+pub(all) struct QualityReport {
+  source_count : Int
+  probe_count : Int
+  false_negative_count : Int
+  false_positive_count : Int
+  negative_probe_count : Int
+}
+
+pub(all) struct QuerySummary {
+  query_count : Int
+  positive_count : Int
+  negative_count : Int
+}
+
+pub(all) struct ShardStats {
+  shard_count : Int
+  key_count : Int
+  populated_shards : Int
+  smallest_shard : Int
+  largest_shard : Int
+}
+
+pub struct ShardedFuseFilter {
+  shard_count : Int
+  shards : Array[BinaryFuseFilter?]
+}
+pub fn ShardedFuseFilter::build(Array[Int], Int) -> Result[Self, FuseError]
+pub fn ShardedFuseFilter::build_with_options(Array[Int], Int, BuildOptions) -> Result[Self, FuseError]
+pub fn ShardedFuseFilter::contains(Self, Int) -> Bool
+pub fn ShardedFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn ShardedFuseFilter::encode_words(Self) -> Array[Int]
+pub fn ShardedFuseFilter::len(Self) -> Int
+pub fn ShardedFuseFilter::stats(Self) -> ShardStats
+pub fn ShardedFuseFilter::validate(Self, Array[Int]) -> Bool
+
+pub(all) struct SnapshotDiff {
+  additions : Array[Int]
+  removals : Array[Int]
+  shared_count : Int
+}
+pub fn SnapshotDiff::apply_to(Self, VerifiedFuseFilter) -> Result[VerifiedFuseFilter, FuseError]
+pub fn SnapshotDiff::change_count(Self) -> Int
+pub fn SnapshotDiff::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn SnapshotDiff::encode_words(Self) -> Array[Int]
+pub fn SnapshotDiff::is_empty(Self) -> Bool
+pub fn SnapshotDiff::to_patch(Self) -> FusePatch
+pub fn SnapshotDiff::validate(Self) -> Bool
+
+pub struct StaticIntMap {
+  index : VerifiedFuseFilter
+  values : Array[Int]
+}
+pub fn StaticIntMap::build(Array[FuseValue]) -> Result[Self, FuseError]
+pub fn StaticIntMap::contains_key(Self, Int) -> Bool
+pub fn StaticIntMap::difference(Self, Self) -> Result[Self, FuseError]
+pub fn StaticIntMap::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn StaticIntMap::encode_words(Self) -> Array[Int]
+pub fn StaticIntMap::entries(Self) -> Array[FuseValue]
+pub fn StaticIntMap::entries_before(Self, Int, Int) -> Array[FuseValue]
+pub fn StaticIntMap::entries_from(Self, Int, Int) -> Array[FuseValue]
+pub fn StaticIntMap::entries_inclusive(Self, Int, Int) -> Array[FuseValue]
+pub fn StaticIntMap::get(Self, Int) -> Int?
+pub fn StaticIntMap::get_all(Self, Array[Int]) -> Array[Int?]
+pub fn StaticIntMap::get_ceiling(Self, Int) -> FuseValue?
+pub fn StaticIntMap::get_floor(Self, Int) -> FuseValue?
+pub fn StaticIntMap::intersection(Self, Self, MapMergePolicy) -> Result[Self, FuseError]
+pub fn StaticIntMap::keys(Self) -> Array[Int]
+pub fn StaticIntMap::len(Self) -> Int
+pub fn StaticIntMap::merge(Self, Self, MapMergePolicy) -> Result[Self, FuseError]
+pub fn StaticIntMap::merge_stats(Self, Self) -> MapMergeStats
+pub fn StaticIntMap::rank(Self, Int) -> Int
+pub fn StaticIntMap::stats(Self) -> MapStats
+pub fn StaticIntMap::validate(Self) -> Bool
+pub fn StaticIntMap::with_updates(Self, Array[FuseValue]) -> Result[Self, FuseError]
+pub fn StaticIntMap::without_keys(Self, Array[Int]) -> Result[Self, FuseError]
+
+pub struct StaticStringMap {
+  filter : StringFuseFilter
+  entries : Array[StringFuseValue]
+}
+pub fn StaticStringMap::build(Array[StringFuseValue]) -> Result[Self, FuseError]
+pub fn StaticStringMap::contains_key(Self, String) -> Bool
+pub fn StaticStringMap::entries(Self) -> Array[StringFuseValue]
+pub fn StaticStringMap::entries_before(Self, String, Int) -> Array[StringFuseValue]
+pub fn StaticStringMap::entries_between(Self, String, String) -> Array[StringFuseValue]
+pub fn StaticStringMap::entries_from(Self, String, Int) -> Array[StringFuseValue]
+pub fn StaticStringMap::get(Self, String) -> Int?
+pub fn StaticStringMap::get_all(Self, Array[String]) -> Array[Int?]
+pub fn StaticStringMap::get_ceiling(Self, String) -> StringFuseValue?
+pub fn StaticStringMap::get_floor(Self, String) -> StringFuseValue?
+pub fn StaticStringMap::keys(Self) -> Array[String]
+pub fn StaticStringMap::len(Self) -> Int
+pub fn StaticStringMap::rank(Self, String) -> Int
+pub fn StaticStringMap::stats(Self) -> StringMapStats
+pub fn StaticStringMap::validate(Self) -> Bool
+pub fn StaticStringMap::with_updates(Self, Array[StringFuseValue]) -> Result[Self, FuseError]
+pub fn StaticStringMap::without_keys(Self, Array[String]) -> Result[Self, FuseError]
+
+pub struct StringFuseFilter {
+  filter : BinaryFuseFilter
+}
+pub fn StringFuseFilter::build(Array[String]) -> Result[Self, FuseError]
+pub fn StringFuseFilter::build16(Array[String]) -> Result[Self, FuseError]
+pub fn StringFuseFilter::contains(Self, String) -> Bool
+pub fn StringFuseFilter::len(Self) -> Int
+pub fn StringFuseFilter::stats(Self) -> BuildStats
+
+pub(all) struct StringFuseValue {
+  key : String
+  value : Int
+}
+
+pub(all) struct StringMapStats {
+  entry_count : Int
+  shortest_key_length : Int
+  longest_key_length : Int
+}
+
+pub(all) struct TagStats {
+  tag_count : Int
+  key_count : Int
+  smallest_tag : Int
+  largest_tag : Int
+}
+
+pub struct TaggedFuseFilter {
+  tags : Array[Int]
+  filters : Array[BinaryFuseFilter]
+}
+pub fn TaggedFuseFilter::build(Array[TaggedHash]) -> Result[Self, FuseError]
+pub fn TaggedFuseFilter::contains(Self, Int, Int) -> Bool
+pub fn TaggedFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn TaggedFuseFilter::encode_words(Self) -> Array[Int]
+pub fn TaggedFuseFilter::key_count(Self) -> Int
+pub fn TaggedFuseFilter::stats(Self) -> TagStats
+pub fn TaggedFuseFilter::tag_count(Self) -> Int
+pub fn TaggedFuseFilter::validate(Self, Array[TaggedHash]) -> Bool
+
+pub(all) struct TaggedHash {
+  tag : Int
+  hash : Int
+}
+
+pub struct VerifiedFuseFilter {
+  filter : BinaryFuseFilter
+  sorted_hashes : Array[Int]
+}
+pub fn VerifiedFuseFilter::apply_patch(Self, FusePatch) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::build(Array[Int]) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::classify_exact(Self, Array[Int]) -> Array[ExactMembershipResult]
+pub fn VerifiedFuseFilter::contains_exact(Self, Int) -> Bool
+pub fn VerifiedFuseFilter::count_exact_matches(Self, Array[Int]) -> Int
+pub fn VerifiedFuseFilter::diff(Self, Self) -> SnapshotDiff
+pub fn VerifiedFuseFilter::difference(Self, Self) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
+pub fn VerifiedFuseFilter::encode_words(Self) -> Array[Int]
+pub fn VerifiedFuseFilter::hashes(Self) -> Array[Int]
+pub fn VerifiedFuseFilter::intersection(Self, Self) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::len(Self) -> Int
+pub fn VerifiedFuseFilter::may_contain(Self, Int) -> Bool
+pub fn VerifiedFuseFilter::symmetric_difference(Self, Self) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::union(Self, Self) -> Result[Self, FuseError]
+pub fn VerifiedFuseFilter::validate(Self) -> Bool
+
+// Type aliases
+
+// Traits
+

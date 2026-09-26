@@ -1,0 +1,5 @@
+import {
+  "xlyyyyyy112/moon-fuse" @fuse,
+}
+
+pkgtype(kind: "executable")
