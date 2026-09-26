@@ -14,8 +14,33 @@ construction can return `true`; choose 8-bit fingerprints for lower memory or
 ```moonbit
 let filter = @fuse.BinaryFuseFilter::build([101, 202, 303]).unwrap()
 assert_true(filter.contains(202))
-assert_false(filter.contains(404)) // a miss is expected, but not guaranteed
+let might_contain_404 = filter.contains(404) // either result is possible
 ```
+
+For string keys, `StringFuseFilter::build_with_options` accepts the same
+fingerprint width, retry limit, and initial seed as the integer filter.
+`StaticStringMap::build_with_options` uses that filter only as a prefilter and
+then compares the original key, so a fingerprint false positive does not
+produce a wrong map value. Its `filter_stats()` method exposes the selected
+filter configuration for diagnostics.
+
+```moonbit
+let options : @fuse.BuildOptions = {
+  fingerprint_bits: 16,
+  max_attempts: 96,
+  initial_seed: 7,
+}
+let headers = @fuse.StaticStringMap::build_with_options([
+  { key: "content-type", value: 1 },
+  { key: "etag", value: 2 },
+], options).unwrap()
+assert_eq(headers.get("etag"), Some(2))
+assert_eq(headers.filter_stats().fingerprint_bits, 16)
+```
+
+String filters hash each string deterministically. As with integer hashes,
+distinct source strings that collide under this hash cannot be inserted into
+one filter; construction returns an error rather than silently dropping a key.
 
 Run the checks and demo locally:
 

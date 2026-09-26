@@ -25,5 +25,3 @@
 ## 来源与许可
 
 实现为 MoonBit 原生代码，项目采用 MIT 许可证。算法设计参考 Mueller Graf 与 Daniel Lemire 的论文 *Binary Fuse Filters: Fast and Smaller Than Xor Filters*（2022），以及 FastFilter/xorfilter（Apache-2.0）；仅借鉴算法思路，未复制其源码、测试或生成数据。[论文](https://arxiv.org/abs/2201.01174) · [参考实现及许可证](https://github.com/FastFilter/xorfilter/blob/master/LICENSE)。
-
-## 当前状态：申报链接按提交者提供的信息填写；GitLink 页面目前无法从本地网络验证，提交前请确认该地址可公开访问，并确认其仓库与 GitHub 代码同步。GitHub 当前可见 3 个提交，仍未满足赛事要求的 10 个有效 commits；后续应按真实功能迭代形成提交，不能用拆分、空提交或重复提交补数。
