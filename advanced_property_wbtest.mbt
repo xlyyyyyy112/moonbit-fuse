@@ -45,6 +45,10 @@ test "filter codecs reject truncated, trailing and invalid-version data" {
   let bad_length = words.copy()
   bad_length[7] = bad_length[7] + 1
   assert_true(decode_words(bad_length) is Err(InvalidEncoding))
+  assert_true(
+    decode_words([1, 1, 1, 0x7fffffff, 0, 1, 8, 2, 0, 0])
+    is Err(InvalidEncoding),
+  )
 }
 
 ///|
@@ -66,6 +70,42 @@ test "shards and tags agree with their unpartitioned source domain" {
   let tagged_loaded = decode_tagged_words(tagged.encode_words()).unwrap()
   assert_true(sharded_loaded.validate(hashes))
   assert_true(tagged_loaded.validate(entries))
+}
+
+///|
+test "tagged and epoch composites propagate filter build options" {
+  let options : BuildOptions = {
+    fingerprint_bits: 16,
+    max_attempts: 32,
+    initial_seed: 17,
+  }
+  let tagged = TaggedFuseFilter::build_with_options(
+    [
+      { tag: 2, hash: 201 },
+      { tag: 2, hash: 202 },
+      { tag: 9, hash: 901 },
+      { tag: 9, hash: 902 },
+    ],
+    options,
+  ).unwrap()
+  assert_eq(tagged.filters[0].stats().fingerprint_bits, 16)
+  assert_eq(tagged.filters[1].stats().fingerprint_bits, 16)
+  assert_true(tagged.contains(9, 902))
+
+  let epochs = EpochFuseFilter::build_with_options(
+    [{ epoch: 1, hash: 101 }, { epoch: 2, hash: 201 }],
+    options,
+  ).unwrap()
+  assert_eq(epochs.epochs[0].filter.stats().fingerprint_bits, 16)
+  assert_eq(epochs.epochs[1].filter.stats().fingerprint_bits, 16)
+  assert_true(epochs.contains_at(2, 201))
+
+  let epoch_map = EpochStaticIntMap::build_with_options(
+    [{ epoch: 1, hash: 101, value: 1 }, { epoch: 2, hash: 201, value: 2 }],
+    options,
+  ).unwrap()
+  assert_eq(epoch_map.epochs[0].map.filter_stats().fingerprint_bits, 16)
+  assert_eq(epoch_map.get_at(2, 201), Some(2))
 }
 
 ///|

@@ -2,6 +2,14 @@
 pub fn TaggedFuseFilter::build(
   entries : Array[TaggedHash],
 ) -> Result[TaggedFuseFilter, FuseError] {
+  TaggedFuseFilter::build_with_options(entries, default_build_options())
+}
+
+///|
+pub fn TaggedFuseFilter::build_with_options(
+  entries : Array[TaggedHash],
+  options : BuildOptions,
+) -> Result[TaggedFuseFilter, FuseError] {
   if entries.length() == 0 {
     return Err(EmptyInput)
   }
@@ -27,7 +35,7 @@ pub fn TaggedFuseFilter::build(
       hashes.push(sorted[cursor].hash)
       cursor = cursor + 1
     }
-    match BinaryFuseFilter::build(hashes) {
+    match BinaryFuseFilter::build_with_options(hashes, options) {
       Ok(filter) => {
         tags.push(tag)
         filters.push(filter)

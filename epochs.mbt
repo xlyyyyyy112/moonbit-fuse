@@ -2,6 +2,14 @@
 pub fn EpochFuseFilter::build(
   entries : Array[EpochHash],
 ) -> Result[EpochFuseFilter, FuseError] {
+  EpochFuseFilter::build_with_options(entries, default_build_options())
+}
+
+///|
+pub fn EpochFuseFilter::build_with_options(
+  entries : Array[EpochHash],
+  options : BuildOptions,
+) -> Result[EpochFuseFilter, FuseError] {
   if entries.length() == 0 {
     return Err(EmptyInput)
   }
@@ -23,7 +31,7 @@ pub fn EpochFuseFilter::build(
       hashes.push(sorted[cursor].hash)
       cursor = cursor + 1
     }
-    match BinaryFuseFilter::build(hashes) {
+    match BinaryFuseFilter::build_with_options(hashes, options) {
       Ok(filter) => epochs.push({ epoch, filter })
       Err(error) => return Err(error)
     }

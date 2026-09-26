@@ -116,6 +116,7 @@ pub struct EpochFuseFilter {
   epochs : Array[FuseEpoch]
 }
 pub fn EpochFuseFilter::build(Array[EpochHash]) -> Result[Self, FuseError]
+pub fn EpochFuseFilter::build_with_options(Array[EpochHash], BuildOptions) -> Result[Self, FuseError]
 pub fn EpochFuseFilter::contains_any(Self, Int) -> Bool
 pub fn EpochFuseFilter::contains_at(Self, Int, Int) -> Bool
 pub fn EpochFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
@@ -147,6 +148,7 @@ pub struct EpochStaticIntMap {
   epochs : Array[FuseMapEpoch]
 }
 pub fn EpochStaticIntMap::build(Array[EpochFuseValue]) -> Result[Self, FuseError]
+pub fn EpochStaticIntMap::build_with_options(Array[EpochFuseValue], BuildOptions) -> Result[Self, FuseError]
 pub fn EpochStaticIntMap::encode_transport(Self) -> Result[Bytes, FuseError]
 pub fn EpochStaticIntMap::encode_words(Self) -> Array[Int]
 pub fn EpochStaticIntMap::entry_count(Self) -> Int
@@ -421,6 +423,7 @@ pub struct TaggedFuseFilter {
   filters : Array[BinaryFuseFilter]
 }
 pub fn TaggedFuseFilter::build(Array[TaggedHash]) -> Result[Self, FuseError]
+pub fn TaggedFuseFilter::build_with_options(Array[TaggedHash], BuildOptions) -> Result[Self, FuseError]
 pub fn TaggedFuseFilter::contains(Self, Int, Int) -> Bool
 pub fn TaggedFuseFilter::encode_transport(Self) -> Result[Bytes, FuseError]
 pub fn TaggedFuseFilter::encode_words(Self) -> Array[Int]

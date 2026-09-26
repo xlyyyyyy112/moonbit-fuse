@@ -2,6 +2,14 @@
 pub fn EpochStaticIntMap::build(
   entries : Array[EpochFuseValue],
 ) -> Result[EpochStaticIntMap, FuseError] {
+  EpochStaticIntMap::build_with_options(entries, default_build_options())
+}
+
+///|
+pub fn EpochStaticIntMap::build_with_options(
+  entries : Array[EpochFuseValue],
+  options : BuildOptions,
+) -> Result[EpochStaticIntMap, FuseError] {
   if entries.length() == 0 {
     return Err(EmptyInput)
   }
@@ -23,7 +31,7 @@ pub fn EpochStaticIntMap::build(
       values.push({ hash: sorted[cursor].hash, value: sorted[cursor].value })
       cursor = cursor + 1
     }
-    match StaticIntMap::build(values) {
+    match StaticIntMap::build_with_options(values, options) {
       Ok(map) => epochs.push({ epoch, map })
       Err(error) => return Err(error)
     }
