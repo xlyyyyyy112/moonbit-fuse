@@ -28,10 +28,12 @@ pub fn FuseBuilder::add_all(
   hashes : Array[Int],
 ) -> Result[Unit, FuseError] {
   for hash in hashes {
-    match self.add(hash) {
-      Ok(_) => ()
-      Err(error) => return Err(error)
+    if hash < 0 {
+      return Err(NegativeHash(hash))
     }
+  }
+  for hash in hashes {
+    self.hashes.push(hash)
   }
   Ok(())
 }

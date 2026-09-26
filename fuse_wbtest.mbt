@@ -62,6 +62,15 @@ test "builders and static integer maps accept construction options" {
 }
 
 ///|
+test "builder batch insertion is atomic on invalid input" {
+  let builder = FuseBuilder::new()
+  builder.add(5).unwrap()
+  assert_true(builder.add_all([7, -9, 11]) is Err(NegativeHash(-9)))
+  assert_eq(builder.len(), 1)
+  assert_true(builder.build().unwrap().validate([5]))
+}
+
+///|
 test "word encoding round trips and rejects damage" {
   let hashes = [3, 8, 14, 22, 37, 59, 91]
   let original = BinaryFuseFilter::build16(hashes).unwrap()
